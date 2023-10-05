@@ -135,6 +135,7 @@ sns.heatmap(data=variables_cuantitativas.corr(), annot=True, cmap='coolwarm', fm
 # Muestra el heatmap
 plt.show()
 
+#Hay una correlación entre la ganancia colocada en 1 y 0, con el discount, y la variable creada de días demora no tiene correlación con ninguna variable. 
 #Y hay una correlación inversa entre descuento y ganancia, es decir si el descuento aumenta, disminuye la ganancia. 
 
 
