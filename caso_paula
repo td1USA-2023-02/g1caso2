@@ -1,0 +1,52 @@
+import pandas as pd
+pd.set_option('display.max_columns', None)
+
+archivo_origen = "g1caso2\Super Store.xlsx"
+
+# Leer los datos desde el archivo CSV y especificar que la primera fila es el encabezado
+datos = pd.read_excel(archivo_origen)
+
+# Verificar los primeros registros
+print(datos.head())
+print(datos.columns)
+
+
+print(datos.shape)
+print(datos.info())
+print(datos.isnull().sum())
+print(datos.describe())
+
+indice_max_sales = datos['Sales'].idxmax()
+fila_max_sales = datos.loc[indice_max_sales]
+print("El máximo de ventas es", fila_max_sales)
+
+indice_max_quantity = datos['Quantity'].idxmax()
+fila_max_quantity = datos.loc[indice_max_quantity]
+print("El máximo de cantidad es", fila_max_quantity)
+
+indice_max_discount = datos['Discount'].idxmax()
+fila_max_discount = datos.loc[indice_max_discount]
+print("El máximo de descuento es", fila_max_discount)
+
+indice_max_profit = datos['Profit'].idxmax()
+fila_max_profit = datos.loc[indice_max_profit]
+print("El máximo de ganancias es", fila_max_profit)
+
+indice_min_profit = datos['Profit'].idxmin()
+fila_min_profit = datos.loc[indice_min_profit]
+print("El minimo de ganacias es", fila_min_profit)
+
+#Se observa que la base de datos cuenta con 9994 registros y 22 variables. 
+#La mayoría de estas son cualitativas, no hay datos vacios.
+#Existen registros desde 2014, hasta 2018. 
+#La media de las ventas es 229,85 teniendo un máximo en ventas de 22638,48.
+#La cantidad maxima de un producto ha sido 14, y en promedio se piden 3,7 en cantidad.
+#El máximo descuento que se ha dado es de 80%, y en promedio se da 0,15% de descuento. 
+#Las ganancias en promedio son de 28,65, teniendo como mínimo -6599, 97 que se toman como perdidas
+#y su máximo de 8399,97, se observa que el promedio se desvia por las perdidas. 
+
+#Analizando los máximos de ventas, se observa que se trta de la categoría tecnología, maquinas,
+#donde se pidieron 6, maquinas de videoconferencia, donde se obtuvo un descuento del 50%, sin embargo, 
+#se obtuvo una perdda de 1811,07. Este pedido fue para la region sur. 
+
+#
