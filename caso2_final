@@ -138,7 +138,7 @@ plt.show()
 #Hay una correlación entre la perdida, con el discount, y la variable creada de días demora no tiene correlación con ninguna variable. 
 #Y hay una correlación inversa entre descuento y ganancia, es decir si el descuento aumenta, disminuye la ganancia. 
 #Hay una correlación entre perdida y discount, entre más descuento hay, más perdida se evidencia. 
-
+#La pérdida es que el margen de contribución para la venta es negativa.
 
 plt.figure(figsize=(10, 6))  # Ajusta el tamaño de la figura (opcional)
 
@@ -155,5 +155,15 @@ plt.show()
 
 #Se observa como la categoría tecnología tiene la mayor cantidad de ventas
 
+sns.barplot(x="Profit", y="Category", data=datos)
+# Agrega etiquetas de los ejes y un título
+plt.xlabel("Profit")
+plt.ylabel("Categoría")
+plt.title("Gráfico de Barras de Ganancias por Categoría")
+
+# Muestra el gráfico de barras
+plt.show()
+
 sns.countplot(datos, x="perdida ").set(title="Cantidad de ganancías y pérdidas")
 plt.show()
+
