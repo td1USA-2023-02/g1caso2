@@ -33,16 +33,18 @@ datal = datal.sort_values(by="dias_demora",ascending=False)
 
 print(datal.head())
 
-def ganancia (Profit):
+def perdida (Profit):
     if Profit > 0:
-        return 1
-    else:
         return 0
+    else:
+        return 1
     
-datal["ganancia "] = datal["Profit"].apply(ganancia )
+datal["perdida "] = datal["Profit"].apply( perdida )
 
 print(datal.head())
 
 
-datal.to_csv('dta_flimpiada.csv', index=False)
+datal.to_csv('dta_flimpiadav2.csv', index=False)
+
+
 
