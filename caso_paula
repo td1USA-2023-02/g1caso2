@@ -2,7 +2,6 @@ import pandas as pd
 pd.set_option('display.max_columns', None)
 
 archivo_origen = "g1caso2\Super Store.xlsx"
-
 # Leer los datos desde el archivo CSV y especificar que la primera fila es el encabezado
 datos = pd.read_excel(archivo_origen)
 
@@ -49,4 +48,39 @@ print("El minimo de ganacias es", fila_min_profit)
 #donde se pidieron 6, maquinas de videoconferencia, donde se obtuvo un descuento del 50%, sin embargo, 
 #se obtuvo una perdda de 1811,07. Este pedido fue para la region sur. 
 
-#
+#El máximo en cantidad que tiene un pedido es de 14, la cual tuvo un descuento de 0,2. Enviado a la región Este
+#El pedido fue de clips, en donde se obtuvo una ganancia de 14,5.
+
+#El máximo de descuento que se ha tenido es del 80%, se realizó en la región central, del producto de filtros
+#y se realizó un pedido de 5, la venta fue de 68,81 pero se obtuvo una perdida de -123.858, teniendo un pedido ya completado. 
+
+#Se evidencia que aunque el pedido se encuentre en estado completado, hay pérdidas. Se debe analizar porque ocurren estos descuentos ya que
+#al hacerlos significan una perdida. 
+
+#La máxima ganancia es 8399.976, de fotocopiadoras donde se pidieron 5, este pedido se realizó en la región central. 
+#El mínimo de ganancias, o la máxima perdida es de 6599.978, donde se obtiene una venta de 4499.985, se obtiene un descuento del 70%, se realiza un pedido 
+#de 5 impresoras, se debe realizar un análisis para los descuentos ya que se ha evidenciado que por estos descuentos se obtienen mayores perdidas. 
+
+resumen_segmento = datos.groupby('Segment').agg({
+    'Sales': 'sum',
+    'Discount': 'mean',
+    'Discount': 'max'
+})
+print(resumen_segmento)
+
+resumen_subcategoria = datos.groupby('Sub-Category').agg({
+    'Sales': 'sum',
+    'Discount': 'mean',
+    'Discount': 'max'
+})
+print(resumen_subcategoria)
+
+resumen_categoria = datos.groupby('Category').agg({
+    'Sales': 'sum',
+    'Discount': 'mean',
+    'Discount': 'max'
+})
+print(resumen_categoria)
+
+#Se puede observar que la sub-categoria de maquinas tiene en promedio un descuento del 30%. 
+#Y que el máximo de descuento en categorías es para los office supplies. 
