@@ -13,3 +13,36 @@ residuos_variables = ["Row ID","Customer ID","Customer Name","Country","Postal C
 data_limpiada=datos.drop(residuos_variables, axis=1)
 
 data_limpiada.to_csv('datos_limpiados.csv', index=False)
+
+
+data2 = "g1caso2\datos_limpiados.csv"
+
+# Leer los datos desde el archivo CSV y especificar que la primera fila es el encabezado
+datal = pd.read_csv(data2)
+print(datal.head())
+
+
+
+datal["Ship Date"] = pd.to_datetime(datal["Ship Date"],format='%Y-%m-%d')
+datal["Order Date"] = pd.to_datetime(datal["Order Date"],format='%Y-%m-%d')  
+
+datal ["dias_demora"] = (datal["Ship Date"]-datal["Order Date"]).dt.days
+print(datal.head())
+
+datal = datal.sort_values(by="dias_demora",ascending=False)
+
+print(datal.head())
+
+def ganancia (Profit):
+    if Profit > 0:
+        return 1
+    else:
+        return 0
+    
+datal["ganancia "] = datal["Profit"].apply(ganancia )
+
+print(datal.head())
+
+
+datal.to_csv('dta_flimpiada.csv', index=False)
+
