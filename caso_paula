@@ -1,4 +1,6 @@
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 pd.set_option('display.max_columns', None)
 
 archivo_origen = "g1caso2\Super Store.xlsx"
@@ -64,23 +66,74 @@ print("El minimo de ganacias es", fila_min_profit)
 resumen_segmento = datos.groupby('Segment').agg({
     'Sales': 'sum',
     'Discount': 'mean',
-    'Discount': 'max'
+    'Discount': 'max',
+    'Profit': 'mean'
 })
 print(resumen_segmento)
 
 resumen_subcategoria = datos.groupby('Sub-Category').agg({
     'Sales': 'sum',
     'Discount': 'mean',
-    'Discount': 'max'
+    'Discount': 'max',
+    'Profit': 'mean'
 })
 print(resumen_subcategoria)
 
 resumen_categoria = datos.groupby('Category').agg({
     'Sales': 'sum',
     'Discount': 'mean',
-    'Discount': 'max'
+    'Discount': 'max',
+    'Profit': 'mean'
 })
 print(resumen_categoria)
 
 #Se puede observar que la sub-categoria de maquinas tiene en promedio un descuento del 30%. 
 #Y que el máximo de descuento en categorías es para los office supplies. 
+
+#La máxima ganancia se da en la sub-categoría de copiers, y donde se tienen más perdidas es en mesas. 
+#Por consiguiente, la categoría de tecnología tiene mayores ganancias. 
+
+##Gráficos
+
+sns.boxplot(y="Profit",data=datos)
+plt.show()
+
+#Se puede observar que las ganancías tienen demasiada desviación. 
+sns.boxplot(datos, y="Status", x="Profit").set(title="Dependiendo del status")
+plt.show()
+#Se observa que hay más variación en pendientes, y menor en completados, de acuerdo a sus ganancias. 
+sns.boxplot(datos, y="Status", x="Sales").set(title="Dependiendo del status")
+plt.show()
+
+#La mayor cantidad de ventas está en estado abierto.
+
+sns.barplot(data=datos, x='Discount', y= 'Profit')
+plt.show()
+
+#La mayoría de descuentos son del 0.2
+#Como se puede observar desde el descuento del 30%, se dan perdidas, se puede observar como un descuento del 70% significó la mayor cantidad de perdida en términos de dinero. 
+
+sns.scatterplot(data=datos, x='Discount', y= 'Profit')
+plt.show()
+
+sns.scatterplot(data=datos, x="Sales",y="Profit")
+plt.show()
+
+#Se observa la mayoría de ventas son menores a 5000, y hay una ligera tendencia. 
+
+
+variables_cuantitativas = datos.select_dtypes(include=['number'])
+
+# Ajusta el tamaño de la figura
+plt.figure(figsize=(10, 8))
+
+# Crea el heatmap utilizando las variables cuantitativas
+sns.heatmap(data=variables_cuantitativas.corr(), annot=True, cmap='coolwarm', fmt='.2f')  # fmt='.2f' para mostrar 2 decimales
+
+
+
+# Muestra el heatmap
+plt.show()
+
+#Y hay una correlación inversa entre descuento y ganancia, es decir si el descuento aumenta, disminuye la ganancia. 
+
