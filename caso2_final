@@ -168,6 +168,9 @@ plt.show()
 sns.countplot(datos, x="perdida ").set(title="Cantidad de ganancías y pérdidas")
 plt.show()
 
+#Se observa que hay una mayor cantidad de ganancias que de perdidas, sin embargo la cantidad de perdidas es bastante alta para el negocio.
+
+
 correlation, p_value = pearsonr(datos['perdida '], datos['Discount'])
 
 print(f"Correlación de Pearson: {correlation}")
