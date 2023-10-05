@@ -1,0 +1,140 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+pd.set_option('display.max_columns', None)
+
+archivo_origen = "g1caso2\dta_flimpiada.csv"
+# Leer los datos desde el archivo CSV y especificar que la primera fila es el encabezado
+datos = pd.read_csv(archivo_origen)
+
+# Verificar los primeros registros
+print(datos.head())
+print(datos.columns)
+
+
+print(datos.shape)
+print(datos.info())
+print(datos.isnull().sum())
+print(datos.describe())
+
+indice_max_sales = datos['Sales'].idxmax()
+fila_max_sales = datos.loc[indice_max_sales]
+print("El máximo de ventas es", fila_max_sales)
+
+indice_max_quantity = datos['Quantity'].idxmax()
+fila_max_quantity = datos.loc[indice_max_quantity]
+print("El máximo de cantidad es", fila_max_quantity)
+
+indice_max_discount = datos['Discount'].idxmax()
+fila_max_discount = datos.loc[indice_max_discount]
+print("El máximo de descuento es", fila_max_discount)
+
+indice_max_profit = datos['Profit'].idxmax()
+fila_max_profit = datos.loc[indice_max_profit]
+print("El máximo de ganancias es", fila_max_profit)
+
+indice_min_profit = datos['Profit'].idxmin()
+fila_min_profit = datos.loc[indice_min_profit]
+print("El minimo de ganacias es", fila_min_profit)
+
+#Se observa que la base de datos cuenta con 9994 registros y 22 variables. 
+#La mayoría de estas son cualitativas, no hay datos vacios.
+#Existen registros desde 2014, hasta 2018. 
+#La media de las ventas es 229,85 teniendo un máximo en ventas de 22638,48.
+#La cantidad maxima de un producto ha sido 14, y en promedio se piden 3,7 en cantidad.
+#El máximo descuento que se ha dado es de 80%, y en promedio se da 0,15% de descuento. 
+#Las ganancias en promedio son de 28,65, teniendo como mínimo -6599, 97 que se toman como perdidas
+#y su máximo de 8399,97, se observa que el promedio se desvia por las perdidas. 
+
+#Analizando los máximos de ventas, se observa que se trta de la categoría tecnología, maquinas,
+#donde se pidieron 6, maquinas de videoconferencia, donde se obtuvo un descuento del 50%, sin embargo, 
+#se obtuvo una perdda de 1811,07. Este pedido fue para la region sur. 
+
+#El máximo en cantidad que tiene un pedido es de 14, la cual tuvo un descuento de 0,2. Enviado a la región Este
+#El pedido fue de clips, en donde se obtuvo una ganancia de 14,5.
+
+#El máximo de descuento que se ha tenido es del 80%, se realizó en la región central, del producto de filtros
+#y se realizó un pedido de 5, la venta fue de 68,81 pero se obtuvo una perdida de -123.858, teniendo un pedido ya completado. 
+
+#Se evidencia que aunque el pedido se encuentre en estado completado, hay pérdidas. Se debe analizar porque ocurren estos descuentos ya que
+#al hacerlos significan una perdida. 
+
+#La máxima ganancia es 8399.976, de fotocopiadoras donde se pidieron 5, este pedido se realizó en la región central. 
+#El mínimo de ganancias, o la máxima perdida es de 6599.978, donde se obtiene una venta de 4499.985, se obtiene un descuento del 70%, se realiza un pedido 
+#de 5 impresoras, se debe realizar un análisis para los descuentos ya que se ha evidenciado que por estos descuentos se obtienen mayores perdidas. 
+
+resumen_segmento = datos.groupby('Segment').agg({
+    'Sales': 'sum',
+    'Discount': 'mean',
+    'Discount': 'max',
+    'Profit': 'mean'
+})
+print(resumen_segmento)
+
+resumen_subcategoria = datos.groupby('Sub-Category').agg({
+    'Sales': 'sum',
+    'Discount': 'mean',
+    'Discount': 'max',
+    'Profit': 'mean'
+})
+print(resumen_subcategoria)
+
+resumen_categoria = datos.groupby('Category').agg({
+    'Sales': 'sum',
+    'Discount': 'mean',
+    'Discount': 'max',
+    'Profit': 'mean'
+})
+print(resumen_categoria)
+
+#Se puede observar que la sub-categoria de maquinas tiene en promedio un descuento del 30%. 
+#Y que el máximo de descuento en categorías es para los office supplies. 
+
+#La máxima ganancia se da en la sub-categoría de copiers, y donde se tienen más perdidas es en mesas. 
+#Por consiguiente, la categoría de tecnología tiene mayores ganancias. 
+
+##Gráficos
+
+sns.boxplot(y="Profit",data=datos)
+plt.show()
+
+#Se puede observar que las ganancías tienen demasiada desviación. 
+sns.boxplot(datos, y="Status", x="Profit").set(title="Dependiendo del status")
+plt.show()
+#Se observa que hay más variación en pendientes, y menor en completados, de acuerdo a sus ganancias. 
+sns.boxplot(datos, y="Status", x="Sales").set(title="Dependiendo del status")
+plt.show()
+
+#La mayor cantidad de ventas está en estado abierto.
+
+sns.barplot(data=datos, x='Discount', y= 'Profit')
+plt.show()
+
+#La mayoría de descuentos son del 0.2
+#Como se puede observar desde el descuento del 30%, se dan perdidas, se puede observar como un descuento del 70% significó la mayor cantidad de perdida en términos de dinero. 
+
+sns.scatterplot(data=datos, x='Discount', y= 'Profit')
+plt.show()
+
+sns.scatterplot(data=datos, x="Sales",y="Profit")
+plt.show()
+
+#Se observa la mayoría de ventas son menores a 5000, y hay una ligera tendencia. 
+
+
+variables_cuantitativas = datos.select_dtypes(include=['number'])
+
+# Ajusta el tamaño de la figura
+plt.figure(figsize=(10, 8))
+
+# Crea el heatmap utilizando las variables cuantitativas
+sns.heatmap(data=variables_cuantitativas.corr(), annot=True, cmap='coolwarm', fmt='.2f')  # fmt='.2f' para mostrar 2 decimales
+
+
+
+# Muestra el heatmap
+plt.show()
+
+#Y hay una correlación inversa entre descuento y ganancia, es decir si el descuento aumenta, disminuye la ganancia. 
+
+
