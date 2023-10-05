@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 pd.set_option('display.max_columns', None)
 
-archivo_origen = "g1caso2\dta_flimpiada.csv"
+archivo_origen = "g1caso2\dta_flimpiadav2.csv"
 # Leer los datos desde el archivo CSV y especificar que la primera fila es el encabezado
 datos = pd.read_csv(archivo_origen)
 
@@ -135,7 +135,25 @@ sns.heatmap(data=variables_cuantitativas.corr(), annot=True, cmap='coolwarm', fm
 # Muestra el heatmap
 plt.show()
 
-#Hay una correlación entre la ganancia colocada en 1 y 0, con el discount, y la variable creada de días demora no tiene correlación con ninguna variable. 
+#Hay una correlación entre la perdida, con el discount, y la variable creada de días demora no tiene correlación con ninguna variable. 
 #Y hay una correlación inversa entre descuento y ganancia, es decir si el descuento aumenta, disminuye la ganancia. 
+#Hay una correlación entre perdida y discount, entre más descuento hay, más perdida se evidencia. 
 
 
+plt.figure(figsize=(10, 6))  # Ajusta el tamaño de la figura (opcional)
+
+# Utiliza sns.barplot() para crear el gráfico de barras
+sns.barplot(x="Sales", y="Category", data=datos)
+
+# Agrega etiquetas de los ejes y un título
+plt.xlabel("Ventas")
+plt.ylabel("Categoría")
+plt.title("Gráfico de Barras de Ventas por Categoría")
+
+# Muestra el gráfico de barras
+plt.show()
+
+#Se observa como la categoría tecnología tiene la mayor cantidad de ventas
+
+sns.countplot(datos, x="perdida ").set(title="Cantidad de ganancías y pérdidas")
+plt.show()
