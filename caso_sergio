@@ -1,0 +1,15 @@
+import pandas as pd
+pd.set_option('display.max_columns', None)
+
+archivo_origen = "g1caso2/Super Store.xlsx"
+
+# Leer los datos desde el archivo CSV y especificar que la primera fila es el encabezado
+datos = pd.read_excel(archivo_origen)
+print(datos.head())
+
+
+residuos_variables = ["Row ID","Customer ID","Customer Name","Country","Postal Code","Product ID",]
+
+data_limpiada=datos.drop(residuos_variables, axis=1)
+
+data_limpiada.to_csv('datos_limpiados.csv', index=False)
