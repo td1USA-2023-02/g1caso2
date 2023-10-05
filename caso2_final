@@ -2,6 +2,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
+
 pd.set_option('display.max_columns', None)
 
 archivo_origen = "g1caso2\dta_flimpiadav2.csv"
@@ -180,3 +181,17 @@ if p_value < 0.05:
     print("La correlación es significativa.")
 else:
     print("La correlación no es significativa.")
+
+# Calcula el valor máximo de 'dias_demora' para cada región y selecciona las 5 regiones con los valores máximos más altos
+top5_maximos = datos.groupby('City')['dias_demora'].mean()
+
+# Crea el gráfico de barras
+plt.figure(figsize=(7, 4))
+top5_maximos.plot(kind='bar', color='skyblue')
+plt.title('Top 5 Regiones con los Valores Máximos Más Altos de Dias de Demora')
+plt.xlabel('Región')
+plt.ylabel('Valor Máximo de Dias de Demora')
+plt.xticks(rotation=45)
+
+# Muestra el gráfico
+plt.show()
