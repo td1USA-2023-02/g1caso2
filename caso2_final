@@ -504,7 +504,39 @@ category_colors = {
 datos['Category_Color'] = datos['Category'].map(category_colors)
 
 # Crea el gráfico de TreeMap
-fig3 = px.treemap(datos, path=["Region", "Category", "Sub-Category"], values="Sales", hover_data=["Sales"],
+fig1 = px.treemap(datos, path=["Region", "Category", "Sub-Category"], values="Sales", hover_data=["Sales"],
+                  color="Category_Color")  # Usamos la nueva columna "Category_Color" como argumento de color
+
+# Configura el tamaño del gráfico
+fig1.update_layout(width=800, height=650)
+
+# Muestra el gráfico
+fig1.show()
+
+category_colors = {
+    'Furniture': 'blue',  # Color para la categoría "Furniture"
+    'Office Supplies': 'green'  # Color para la categoría "Office Supplies"
+}
+datos['Category_Color'] = datos['Category'].map(category_colors)
+
+# Crea el gráfico de TreeMap con Profit en lugar de Sales
+fig2 = px.treemap(datos, path=["Region", "Category", "Sub-Category"], values="Discount", hover_data=["Discount"],
+                  color="Category_Color")  # Usamos la nueva columna "Category_Color" como argumento de color
+
+# Configura el tamaño del gráfico
+fig2.update_layout(width=800, height=650)
+
+# Muestra el gráfico
+fig2.show()
+
+category_colors = {
+    'Furniture': 'blue',  # Color para la categoría "Furniture"
+    'Office Supplies': 'green'  # Color para la categoría "Office Supplies"
+}
+datos['Category_Color'] = datos['Category'].map(category_colors)
+
+# Crea el gráfico de TreeMap con Profit en lugar de Sales
+fig3 = px.treemap(datos, path=["Region", "Category", "Sub-Category"], values="perdida ", hover_data=["perdida "],
                   color="Category_Color")  # Usamos la nueva columna "Category_Color" como argumento de color
 
 # Configura el tamaño del gráfico
