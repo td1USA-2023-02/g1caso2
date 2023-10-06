@@ -310,6 +310,27 @@ plt.grid(True)  # Agrega una cuadrícula (opcional)
 plt.xticks(rotation=45)  # Rota las etiquetas del eje x para una mejor legibilidad
 plt.tight_layout()  # Ajusta el diseño para evitar recortes
 plt.show()
+
+
+
+#Se puede observar que en la serie de tiempo por mes, es ciclica ya que tiene subidas y bajadas, 
+#con una bajada siempre en diciembre y enero y una subiuda en septiembre. 
+#Tambien se ve una subida desde el año 2015
+
+plt.figure(figsize=(10, 6))  # Ajusta el tamaño de la figura (opcional)
+sns.barplot(x="Status", y="Sales", data=datos)
+
+# Agrega etiquetas de los ejes y un título
+plt.xlabel("Estado")
+plt.ylabel("Ventas")
+plt.title("Ventas por Estado")
+
+# Muestra el gráfico de barras
+plt.xticks(rotation=45)  # Rota las etiquetas del eje x para una mejor legibilidad
+plt.tight_layout()  # Ajusta el diseño para evitar recortes
+plt.show()
+
+#La mayor cantidad de ventas está en estado open
 '''
 
 import pandas as pd
