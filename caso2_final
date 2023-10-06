@@ -97,7 +97,7 @@ print(resumen_categoria)
 #Por consiguiente, la categoría de tecnología tiene mayores ganancias. 
 
 ##Gráficos
-
+'''
 sns.boxplot(y="Profit",data=datos)
 plt.show()
 
@@ -194,6 +194,124 @@ plt.xlabel('Región')
 plt.ylabel('Valor Máximo de Dias de Demora')
 plt.xticks(rotation=45)
 
+# Muestra el gráfico
+plt.show()
+
+plt.figure(figsize=(10, 6))  # Ajusta el tamaño de la figura (opcional)
+sns.scatterplot(x="dias_demora", y="Sales", hue="Region", data=datos)
+
+# Agrega etiquetas de los ejes y un título
+plt.xlabel("Días de Demora")
+plt.ylabel("Ventas")
+plt.title("Scatter Plot de Días de Demora vs. Ventas")
+
+# Muestra la leyenda
+plt.legend(title="Región")
+
+# Muestra el scatter plot
+plt.show()
+'''
+##ultimas graficas
+#Se puede observar que los días de demora no son significantes, y no tienen correlación con las regiones.
+
+
+
+#Se observa que la menor cantidad de ventas son de la region central 
+
+plt.figure(figsize=(10, 6))  # Ajusta el tamaño de la figura (opcional)
+sns.barplot(x="Region", y="Profit", data=datos, ci=None, palette="muted")
+
+# Agrega etiquetas de los ejes y un título
+plt.xlabel("Región")
+plt.ylabel("Ganancias")
+plt.title("Gráfico de Barras de Ganancias por Región")
+
+# Muestra el gráfico de barras
+plt.xticks(rotation=45)  # Rota las etiquetas del eje x para una mejor legibilidad
+plt.tight_layout()  # Ajusta el diseño para evitar recortes
+
+plt.show()
+
+#La mayor cantidad de ganancias se da en la región west y la menor en la región central 
+
+
+# Agrupa los datos por región y calcula la suma de ventas
+ventas_por_region = datos.groupby('Region')['Sales'].sum()
+
+# Crea el gráfico de anillo
+plt.figure(figsize=(6, 6))  # Ajusta el tamaño de la figura (opcional)
+
+# Dibuja un círculo blanco en el centro para crear el efecto de un gráfico de anillo
+circle = plt.Circle((0, 0), 0.7, color='white')
+plt.gca().add_artist(circle)
+
+# Dibuja el gráfico de pastel exterior
+plt.pie(ventas_por_region, labels=ventas_por_region.index, autopct='%1.1f%%', startangle=90)
+
+# Título
+plt.title('Gráfico de Anillo de Ventas por Región')
+
+# Muestra el gráfico de anillo
+plt.axis('equal')  # Asegura que el gráfico sea un círculo perfecto
+plt.show()
+
+#Se muestra que la región de west es la que más tiene ventas
+
+datos['Order Date'] = pd.to_datetime(datos['Order Date'])
+
+# Agrupa los datos por mes y calcula la suma de ventas por mes
+ventas_por_mes = datos.groupby(datos['Order Date'].dt.to_period('M'))['Sales'].sum()
+
+# Convierte los índices de tiempo a fechas
+fechas = ventas_por_mes.index.to_timestamp()
+
+# Crea el gráfico de series temporales de ventas por mes
+plt.figure(figsize=(12, 6))  # Ajusta el tamaño de la figura (opcional)
+plt.plot(fechas, ventas_por_mes, marker='o', linestyle='-')
+
+# Agrega etiquetas de los ejes y un título
+plt.xlabel("Fecha de Pedido (Mes)")
+plt.ylabel("Ventas")
+plt.title("Serie de Tiempo de Ventas por Mes")
+
+# Formato de fecha en el eje x
+plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter("%Y-%m"))
+plt.gca().xaxis.set_major_locator(plt.matplotlib.dates.MonthLocator())
+
+# Muestra el gráfico de series temporales
+plt.grid(True)  # Agrega una cuadrícula (opcional)
+plt.xticks(rotation=45)  # Rota las etiquetas del eje x para una mejor legibilidad
+plt.tight_layout()  # Ajusta el diseño para evitar recortes
+plt.show()
+
+
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Supongamos que tienes un DataFrame "datos" con las columnas "Order Date" y "Sales"
+
+# Asegúrate de que la columna 'Order Date' sea de tipo DateTime
+datos['Order Date'] = pd.to_datetime(datos['Order Date'])
+
+# Agrupa los datos por año y calcula la suma de ventas por año
+ventas_por_anio = datos.groupby(datos['Order Date'].dt.year)['Sales'].sum()
+
+# Crea el gráfico de series temporales de ventas por año
+plt.figure(figsize=(12, 6))  # Ajusta el tamaño de la figura (opcional)
+plt.plot(ventas_por_anio.index, ventas_por_anio, marker='o', linestyle='-')
+
+# Agrega etiquetas de los ejes y un título
+plt.xlabel("Año")
+plt.ylabel("Ventas")
+plt.title("Serie de Tiempo de Ventas por Año")
+
+# Muestra el gráfico de series temporales
+plt.grid(True)  # Agrega una cuadrícula (opcional)
+plt.xticks(rotation=45)  # Rota las etiquetas del eje x para una mejor legibilidad
+plt.tight_layout()  # Ajusta el diseño para evitar recortes
+plt.show()
+'''
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -278,3 +396,4 @@ plt.ylabel('Valor Máximo de Días de Demora')
 plt.xticks(rotation=45)
 plt.savefig("BarPlot_Top5_Regiones_Dias_Demora.png")  # Guarda el gráfico como PNG
 plt.show()
+'''
