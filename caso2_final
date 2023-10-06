@@ -95,7 +95,7 @@ print(resumen_categoria)
 
 #La máxima ganancia se da en la sub-categoría de copiers, y donde se tienen más perdidas es en mesas. 
 #Por consiguiente, la categoría de tecnología tiene mayores ganancias. 
-
+'''
 ##Gráficos
 
 sns.boxplot(y="Profit",data=datos)
@@ -481,3 +481,34 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.savefig("BarPlot_Ventas_Por_Estado.png")  # Guarda el gráfico como PNG
 plt.show()
+'''
+
+##Ultimos gráficos
+import streamlit as st
+import plotly.express as px
+import pandas as pd
+
+import streamlit as st
+import plotly.express as px
+import pandas as pd
+
+
+
+
+
+# Agrega una columna de colores basada en la categoría
+category_colors = {
+    'Furniture': 'blue',  # Color para la categoría "Furniture"
+    'Office Supplies': 'green'  # Color para la categoría "Office Supplies"
+}
+datos['Category_Color'] = datos['Category'].map(category_colors)
+
+# Crea el gráfico de TreeMap
+fig3 = px.treemap(datos, path=["Region", "Category", "Sub-Category"], values="Sales", hover_data=["Sales"],
+                  color="Category_Color")  # Usamos la nueva columna "Category_Color" como argumento de color
+
+# Configura el tamaño del gráfico
+fig3.update_layout(width=800, height=650)
+
+# Muestra el gráfico
+fig3.show()
