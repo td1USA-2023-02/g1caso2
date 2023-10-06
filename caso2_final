@@ -97,7 +97,7 @@ print(resumen_categoria)
 #Por consiguiente, la categoría de tecnología tiene mayores ganancias. 
 
 ##Gráficos
-'''
+
 sns.boxplot(y="Profit",data=datos)
 plt.show()
 
@@ -210,7 +210,7 @@ plt.legend(title="Región")
 
 # Muestra el scatter plot
 plt.show()
-'''
+
 ##ultimas graficas
 #Se puede observar que los días de demora no son significantes, y no tienen correlación con las regiones.
 
@@ -331,7 +331,7 @@ plt.tight_layout()  # Ajusta el diseño para evitar recortes
 plt.show()
 
 #La mayor cantidad de ventas está en estado open
-'''
+
 
 import pandas as pd
 import seaborn as sns
@@ -417,4 +417,3 @@ plt.ylabel('Valor Máximo de Días de Demora')
 plt.xticks(rotation=45)
 plt.savefig("BarPlot_Top5_Regiones_Dias_Demora.png")  # Guarda el gráfico como PNG
 plt.show()
-'''
