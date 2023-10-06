@@ -3,11 +3,15 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
 from PIL import Image
+import os
+import streamlit as st
+import plotly.express as px
+
 
 pd.set_option('display.max_columns', None)
 
 archivo_origen = "g1caso2\dta_flimpiadav2.csv"
-# Leer los datos desde el archivo CSV y especificar que la primera fila es el encabezado
+# Leer los datos desde el archivo CSV 
 datos = pd.read_csv(archivo_origen)
 
 # Verificar los primeros registros
@@ -19,6 +23,8 @@ print(datos.shape)
 print(datos.info())
 print(datos.isnull().sum())
 print(datos.describe())
+
+#Observar maximos y minimos
 
 indice_max_sales = datos['Sales'].idxmax()
 fila_max_sales = datos.loc[indice_max_sales]
@@ -39,6 +45,8 @@ print("El máximo de ganancias es", fila_max_profit)
 indice_min_profit = datos['Profit'].idxmin()
 fila_min_profit = datos.loc[indice_min_profit]
 print("El minimo de ganacias es", fila_min_profit)
+
+'''
 
 #Se observa que la base de datos cuenta con 9994 registros y 22 variables. 
 #La mayoría de estas son cualitativas, no hay datos vacios.
@@ -65,7 +73,8 @@ print("El minimo de ganacias es", fila_min_profit)
 #La máxima ganancia es 8399.976, de fotocopiadoras donde se pidieron 5, este pedido se realizó en la región central. 
 #El mínimo de ganancias, o la máxima perdida es de 6599.978, donde se obtiene una venta de 4499.985, se obtiene un descuento del 70%, se realiza un pedido 
 #de 5 impresoras, se debe realizar un análisis para los descuentos ya que se ha evidenciado que por estos descuentos se obtienen mayores perdidas. 
-
+'''
+#Agrupación de datos para obtener datos de interés
 resumen_segmento = datos.groupby('Segment').agg({
     'Sales': 'sum',
     'Discount': 'mean',
@@ -90,32 +99,42 @@ resumen_categoria = datos.groupby('Category').agg({
 })
 print(resumen_categoria)
 
+'''
+
 #Se puede observar que la sub-categoria de maquinas tiene en promedio un descuento del 30%. 
 #Y que el máximo de descuento en categorías es para los office supplies. 
 
 #La máxima ganancia se da en la sub-categoría de copiers, y donde se tienen más perdidas es en mesas. 
 #Por consiguiente, la categoría de tecnología tiene mayores ganancias. 
 '''
+
 ##Gráficos
 
+#Box-plot de Profit
 sns.boxplot(y="Profit",data=datos)
 plt.show()
 
-#Se puede observar que las ganancías tienen demasiada desviación. 
+#Se puede observar que las ganancías tienen demasiada desviación.
+ 
+#Boxplot de profit según estado
 sns.boxplot(datos, y="Status", x="Profit").set(title="Dependiendo del status")
 plt.show()
 #Se observa que hay más variación en pendientes, y menor en completados, de acuerdo a sus ganancias. 
+
+#Box plot de ventas segun estado
 sns.boxplot(datos, y="Status", x="Sales").set(title="Dependiendo del status")
 plt.show()
 
 #La mayor cantidad de ventas está en estado abierto.
 
+#Barras de descuento y ganancias
 sns.barplot(data=datos, x='Discount', y= 'Profit')
 plt.show()
 
 #La mayoría de descuentos son del 0.2
 #Como se puede observar desde el descuento del 30%, se dan perdidas, se puede observar como un descuento del 70% significó la mayor cantidad de perdida en términos de dinero. 
 
+#Dispersión de descuento, ventas y ganancias
 sns.scatterplot(data=datos, x='Discount', y= 'Profit')
 plt.show()
 
@@ -124,7 +143,7 @@ plt.show()
 
 #Se observa la mayoría de ventas son menores a 5000, y hay una ligera tendencia. 
 
-
+#HEAT MAP
 variables_cuantitativas = datos.select_dtypes(include=['number'])
 
 # Ajusta el tamaño de la figura
@@ -137,12 +156,13 @@ sns.heatmap(data=variables_cuantitativas.corr(), annot=True, cmap='coolwarm', fm
 
 # Muestra el heatmap
 plt.show()
-
+'''
 #Hay una correlación entre la perdida, con el discount, y la variable creada de días demora no tiene correlación con ninguna variable. 
 #Y hay una correlación inversa entre descuento y ganancia, es decir si el descuento aumenta, disminuye la ganancia. 
 #Hay una correlación entre perdida y discount, entre más descuento hay, más perdida se evidencia. 
 #La pérdida es que el margen de contribución para la venta es negativa.
-
+'''
+#Barras para ventas por categoria
 plt.figure(figsize=(10, 6))  # Ajusta el tamaño de la figura (opcional)
 
 # Utiliza sns.barplot() para crear el gráfico de barras
@@ -158,6 +178,7 @@ plt.show()
 
 #Se observa como la categoría tecnología tiene la mayor cantidad de ventas, así mismo de ganancias. 
 
+#Barras para ganancia por categoria
 sns.barplot(x="Profit", y="Category", data=datos)
 # Agrega etiquetas de los ejes y un título
 plt.xlabel("Profit")
@@ -167,12 +188,13 @@ plt.title("Gráfico de Barras de Ganancias por Categoría")
 # Muestra el gráfico de barras
 plt.show()
 
+#Cantidad de ganacias y perdidas, con nueva variable
 sns.countplot(datos, x="perdida ").set(title="Cantidad de ganancías y pérdidas")
 plt.show()
 
 #Se observa que hay una mayor cantidad de ganancias que de perdidas, sin embargo la cantidad de perdidas es bastante alta para el negocio.
 
-
+#Prueba de hipotesis, correlacion de variable perdida con descuento
 correlation, p_value = pearsonr(datos['perdida '], datos['Discount'])
 
 print(f"Correlación de Pearson: {correlation}")
@@ -183,6 +205,7 @@ if p_value < 0.05:
 else:
     print("La correlación no es significativa.")
 
+#Grafica de dias de demora por ciudad
 # Calcula el valor máximo de 'dias_demora' para cada región y selecciona las 5 regiones con los valores máximos más altos
 top5_maximos = datos.groupby('City')['dias_demora'].mean()
 
@@ -197,6 +220,7 @@ plt.xticks(rotation=45)
 # Muestra el gráfico
 plt.show()
 
+#Dispersion de ventas, dias de demora por región 
 plt.figure(figsize=(10, 6))  # Ajusta el tamaño de la figura (opcional)
 sns.scatterplot(x="dias_demora", y="Sales", hue="Region", data=datos)
 
@@ -214,10 +238,9 @@ plt.show()
 ##ultimas graficas
 #Se puede observar que los días de demora no son significantes, y no tienen correlación con las regiones.
 
-
-
 #Se observa que la menor cantidad de ventas son de la region central 
 
+#Grafica de barras de ganancias por region
 plt.figure(figsize=(10, 6))  # Ajusta el tamaño de la figura (opcional)
 sns.barplot(x="Region", y="Profit", data=datos, ci=None, palette="muted")
 
@@ -234,7 +257,7 @@ plt.show()
 
 #La mayor cantidad de ganancias se da en la región west y la menor en la región central 
 
-
+#Grafico de ventas por región
 # Agrupa los datos por región y calcula la suma de ventas
 ventas_por_region = datos.groupby('Region')['Sales'].sum()
 
@@ -256,7 +279,7 @@ plt.axis('equal')  # Asegura que el gráfico sea un círculo perfecto
 plt.show()
 
 #Se muestra que la región de west es la que más tiene ventas
-
+#Realizar serie de tiempo por mes y años
 datos['Order Date'] = pd.to_datetime(datos['Order Date'])
 
 # Agrupa los datos por mes y calcula la suma de ventas por mes
@@ -285,10 +308,9 @@ plt.tight_layout()  # Ajusta el diseño para evitar recortes
 plt.show()
 
 
-import matplotlib.pyplot as plt
-import pandas as pd
 
-# Supongamos que tienes un DataFrame "datos" con las columnas "Order Date" y "Sales"
+
+
 
 # Asegúrate de que la columna 'Order Date' sea de tipo DateTime
 datos['Order Date'] = pd.to_datetime(datos['Order Date'])
@@ -317,6 +339,8 @@ plt.show()
 #con una bajada siempre en diciembre y enero y una subiuda en septiembre. 
 #Tambien se ve una subida desde el año 2015
 
+#grafico de ventas por estado
+
 plt.figure(figsize=(10, 6))  # Ajusta el tamaño de la figura (opcional)
 sns.barplot(x="Status", y="Sales", data=datos)
 
@@ -333,20 +357,9 @@ plt.show()
 #La mayor cantidad de ventas está en estado open
 
 
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from scipy.stats import pearsonr
-from PIL import Image
-import os
 
-pd.set_option('display.max_columns', None)
 
-archivo_origen = "g1caso2\dta_flimpiadav2.csv"
-# Leer los datos desde el archivo CSV y especificar que la primera fila es el encabezado
-datos = pd.read_csv(archivo_origen)
-
-# ... (El resto del código sigue igual)
+#Exportar graficos a formato .png
 
 # Gráfico de Caja (Box Plot) de Ganancias
 sns.boxplot(y="Profit", data=datos)
@@ -481,19 +494,13 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.savefig("BarPlot_Ventas_Por_Estado.png")  # Guarda el gráfico como PNG
 plt.show()
-'''
+
 
 ##Ultimos gráficos
-import streamlit as st
-import plotly.express as px
-import pandas as pd
-
-import streamlit as st
-import plotly.express as px
-import pandas as pd
 
 
 
+#Grafico de treemap
 
 
 # Agrega una columna de colores basada en la categoría
@@ -544,3 +551,4 @@ fig3.update_layout(width=800, height=650)
 
 # Muestra el gráfico
 fig3.show()
+
