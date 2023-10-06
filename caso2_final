@@ -417,3 +417,67 @@ plt.ylabel('Valor Máximo de Días de Demora')
 plt.xticks(rotation=45)
 plt.savefig("BarPlot_Top5_Regiones_Dias_Demora.png")  # Guarda el gráfico como PNG
 plt.show()
+
+
+# Gráfico de Barras de Ganancias por Región
+plt.figure(figsize=(10, 6))  
+sns.barplot(x="Region", y="Profit", data=datos, ci=None, palette="muted")
+plt.xlabel("Región")
+plt.ylabel("Ganancias")
+plt.title("Gráfico de Barras de Ganancias por Región")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("BarPlot_Ganancias_Por_Region.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Anillo de Ventas por Región
+ventas_por_region = datos.groupby('Region')['Sales'].sum()
+plt.figure(figsize=(6, 6))  
+circle = plt.Circle((0, 0), 0.7, color='white')
+plt.gca().add_artist(circle)
+plt.pie(ventas_por_region, labels=ventas_por_region.index, autopct='%1.1f%%', startangle=90)
+plt.title('Gráfico de Anillo de Ventas por Región')
+plt.axis('equal')
+plt.savefig("PieChart_Ventas_Por_Region.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Serie de Tiempo de Ventas por Mes
+datos['Order Date'] = pd.to_datetime(datos['Order Date'])
+ventas_por_mes = datos.groupby(datos['Order Date'].dt.to_period('M'))['Sales'].sum()
+fechas = ventas_por_mes.index.to_timestamp()
+plt.figure(figsize=(12, 6))
+plt.plot(fechas, ventas_por_mes, marker='o', linestyle='-')
+plt.xlabel("Fecha de Pedido (Mes)")
+plt.ylabel("Ventas")
+plt.title("Serie de Tiempo de Ventas por Mes")
+plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter("%Y-%m"))
+plt.gca().xaxis.set_major_locator(plt.matplotlib.dates.MonthLocator())
+plt.grid(True)
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("TimeSeries_Ventas_Por_Mes.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Serie de Tiempo de Ventas por Año
+plt.figure(figsize=(12, 6))
+ventas_por_anio = datos.groupby(datos['Order Date'].dt.year)['Sales'].sum()
+plt.plot(ventas_por_anio.index, ventas_por_anio, marker='o', linestyle='-')
+plt.xlabel("Año")
+plt.ylabel("Ventas")
+plt.title("Serie de Tiempo de Ventas por Año")
+plt.grid(True)
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("TimeSeries_Ventas_Por_Año.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Barras de Ventas por Estado
+plt.figure(figsize=(10, 6))
+sns.barplot(x="Status", y="Sales", data=datos)
+plt.xlabel("Estado")
+plt.ylabel("Ventas")
+plt.title("Ventas por Estado")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig("BarPlot_Ventas_Por_Estado.png")  # Guarda el gráfico como PNG
+plt.show()
