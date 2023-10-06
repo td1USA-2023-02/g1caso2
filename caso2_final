@@ -2,6 +2,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
+from PIL import Image
 
 pd.set_option('display.max_columns', None)
 
@@ -193,5 +194,87 @@ plt.xlabel('Región')
 plt.ylabel('Valor Máximo de Dias de Demora')
 plt.xticks(rotation=45)
 
-# Muestra el gráfico
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from scipy.stats import pearsonr
+from PIL import Image
+import os
+
+pd.set_option('display.max_columns', None)
+
+archivo_origen = "g1caso2\dta_flimpiadav2.csv"
+# Leer los datos desde el archivo CSV y especificar que la primera fila es el encabezado
+datos = pd.read_csv(archivo_origen)
+
+# ... (El resto del código sigue igual)
+
+# Gráfico de Caja (Box Plot) de Ganancias
+sns.boxplot(y="Profit", data=datos)
+plt.savefig("BoxPlot_Ganancias.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Caja (Box Plot) de Ganancias Dependiendo del Estado
+sns.boxplot(datos, y="Status", x="Profit").set(title="Dependiendo del status")
+plt.savefig("BoxPlot_Ganancias_Estado.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Caja (Box Plot) de Ventas Dependiendo del Estado
+sns.boxplot(datos, y="Status", x="Sales").set(title="Dependiendo del status")
+plt.savefig("BoxPlot_Ventas_Estado.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Barras de Descuentos vs Ganancias
+sns.barplot(data=datos, x='Discount', y='Profit')
+plt.savefig("BarPlot_Descuentos_Ganancias.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Dispersión (Scatter Plot) de Descuentos vs Ganancias
+sns.scatterplot(data=datos, x='Discount', y='Profit')
+plt.savefig("ScatterPlot_Descuentos_Ganancias.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Dispersión (Scatter Plot) de Ventas vs Ganancias
+sns.scatterplot(data=datos, x="Sales", y="Profit")
+plt.savefig("ScatterPlot_Ventas_Ganancias.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Heatmap de Correlación entre Variables Cuantitativas
+plt.figure(figsize=(10, 8))  # Ajusta el tamaño de la figura (opcional)
+sns.heatmap(data=variables_cuantitativas.corr(), annot=True, cmap='coolwarm', fmt='.2f')
+plt.savefig("Heatmap_Correlacion_Variables_Cuantitativas.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Barras de Ventas por Categoría
+sns.barplot(x="Sales", y="Category", data=datos)
+plt.xlabel("Ventas")
+plt.ylabel("Categoría")
+plt.title("Gráfico de Barras de Ventas por Categoría")
+plt.savefig("BarPlot_Ventas_Categoria.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Barras de Ganancias por Categoría
+sns.barplot(x="Profit", y="Category", data=datos)
+plt.xlabel("Profit")
+plt.ylabel("Categoría")
+plt.title("Gráfico de Barras de Ganancias por Categoría")
+plt.savefig("BarPlot_Ganancias_Categoria.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Gráfico de Barras de Cantidad de Ganancias y Pérdidas
+sns.countplot(datos, x="perdida ").set(title="Cantidad de ganancias y pérdidas")
+plt.savefig("CountPlot_Ganancias_Perdidas.png")  # Guarda el gráfico como PNG
+plt.show()
+
+# Calcula el valor máximo de 'dias_demora' para cada región y selecciona las 5 regiones con los valores máximos más altos
+top5_maximos = datos.groupby('City')['dias_demora'].mean()
+
+# Gráfico de Barras de Top 5 Regiones con los Valores Máximos Más Altos de Días de Demora
+plt.figure(figsize=(7, 4))
+top5_maximos.plot(kind='bar', color='skyblue')
+plt.title('Top 5 Regiones con los Valores Máximos Más Altos de Días de Demora')
+plt.xlabel('Región')
+plt.ylabel('Valor Máximo de Días de Demora')
+plt.xticks(rotation=45)
+plt.savefig("BarPlot_Top5_Regiones_Dias_Demora.png")  # Guarda el gráfico como PNG
 plt.show()
